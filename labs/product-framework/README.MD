@@ -1,0 +1,47 @@
+---
+name: Product Framework
+architectureDiagram: images/product-framework.gif
+categories:
+  - Governance & Responsible AI
+  - Platform Capabilities
+services:
+  - Azure Monitor
+  - Cost Management
+  - FinOps
+shortDescription: Implement comprehensive cost tracking and optimization for AI services.
+detailedDescription: Implement a complete FinOps framework for managing AI service costs. This lab covers setting up detailed cost tracking, creating chargeback models for different teams or customers, implementing budget alerts, optimizing token usage, and building dashboards for cost visibility. Learn to balance performance, quality, and cost in your AI deployments.
+tags: []
+authors:
+  - vieiraae
+---
+
+# APIM ❤️ FinOps
+
+## [Product Framework lab](product-framework.ipynb)
+
+[![flow](../../images/product-framework.gif)](product-framework.ipynb)
+
+This playground leverages the [FinOps Framework](https://www.finops.org/framework/) and Azure API Management to control AI costs. It uses the [token limit](https://learn.microsoft.com/en-us/azure/api-management/azure-openai-token-limit-policy) policy for each [product](https://learn.microsoft.com/en-us/azure/api-management/api-management-howto-add-products?tabs=azure-portal&pivots=interactive) and integrates [Azure Monitor alerts](https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview) with [Logic Apps](https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-logic-apps?tabs=send-email) to automatically disable APIM [subscriptions](https://learn.microsoft.com/en-us/azure/api-management/api-management-subscriptions) that exceed cost quotas.
+
+For the sample setup in this lab, each product (`gpt5`, `gpt5mini`, and `unlimited`) is configured with a monthly budget (`costQuota`) of **100 GBP**.
+
+### Result
+
+![result](result.png)
+
+### Prerequisites
+
+- [Python 3.12 or later version](https://www.python.org/) installed
+- [VS Code](https://code.visualstudio.com/) installed with the [Jupyter notebook extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter) enabled
+- [Python environment](https://code.visualstudio.com/docs/python/environments#_creating-environments) with the [requirements.txt](../../requirements.txt) or run `pip install -r requirements.txt` in your terminal
+- [An Azure Subscription](https://azure.microsoft.com/free/) with [Contributor](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged#contributor) + [RBAC Administrator](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged#role-based-access-control-administrator) or [Owner](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged#owner) roles
+- [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) installed and [Signed into your Azure subscription](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively)
+
+### 🚀 Get started
+
+Proceed by opening the [Jupyter notebook](product-framework.ipynb), and follow the steps provided.
+
+### 🗑️ Clean up resources
+
+When you're finished with the lab, you should remove all your deployed resources from Azure to avoid extra charges and keep your Azure subscription uncluttered.
+Use the [clean-up-resources notebook](clean-up-resources.ipynb) for that.

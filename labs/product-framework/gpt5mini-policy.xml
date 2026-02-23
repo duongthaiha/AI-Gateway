@@ -1,0 +1,41 @@
+<policies>
+    <inbound>
+        <base />
+        <set-variable name="requestedModel" value="@{
+            var body = context.Request.Body?.As<string>(preserveContent: true) ?? string.Empty;
+            if (string.IsNullOrEmpty(body)) { return string.Empty; }
+            try
+            {
+                var payload = Newtonsoft.Json.Linq.JObject.Parse(body);
+                return (string)(payload["model"] ?? payload["deployment"] ?? string.Empty);
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }" />
+        <choose>
+            <when condition="@(((string)context.Variables["requestedModel"] ?? string.Empty).ToLowerInvariant() != "gpt-5-mini")">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@("{\"error\":{\"message\":\"The GPT5 Mini product only allows the gpt-5-mini model.\"}}")</set-body>
+                </return-response>
+            </when>
+        </choose>
+        <azure-openai-token-limit counter-key="@(context.Subscription.Id)"
+            tokens-per-minute="{tokens-per-minute}" estimate-prompt-tokens="false" remaining-tokens-variable-name="remainingTokens">
+        </azure-openai-token-limit>        
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
